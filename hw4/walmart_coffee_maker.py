@@ -32,7 +32,7 @@ def test_that_toasters_appear_in_search_at_correct_price_and_rating(browser):
 	
 	# Our coffee makers is on the page
 	assert "Hamilton" in browser.page_source
-	items = browser.find_elements_by_class_name("tile-grid-unit-wrapper Grid-col u-size-1-2 u-size-1-4-m u-size-1-4-l u-size-1-5-xl")
+	items = browser.find_elements_by_class_name("tile-grid-unit-wrapper")
 	hamilton_item = None
 	position = 0
 	n = 0
@@ -67,7 +67,7 @@ def test_that_toasters_appear_in_search_at_correct_price_and_rating(browser):
 
 	# Our hamilton is one of the top 2 results
 	assert "Hamilton" in browser.page_source
-	items = browser.find_elements_by_class_name("tile-container js-tile-container")
+	items = browser.find_elements_by_class_name("tile-container")
 	hamilton_item = None
 	position = 0
 	n = 0
