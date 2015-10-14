@@ -11,20 +11,20 @@ class HomePageTest(TestCase):
         found = resolve('/')
         self.assertEqual(found.func, home_page)
 
-
     def test_home_page_returns_correct_html(self):
-        #request = HttpRequest()  #1
-        #response = home_page(request)  #2
-        #self.assertTrue(response.content.startswith(b'<html>'))  #3
-        #self.assertIn(b'<title>To-Do lists</title>', response.content)  #4
-        #self.assertTrue(response.content.endswith(b'</html>'))  #5
-        #self.assertTrue(response.content.strip().endswith(b'</html>'))
-        #expected_html = render_to_string('home.html')
-        #self.assertEqual(response.content.decode(), expected_html)
+        request = HttpRequest() #
+        response = home_page(request)
+        expected_html = render_to_string('home.html')
+        self.assertEqual(response.content.decode(), expected_html)
+        #self.assertTrue(response.content.startswith(b'<html>')) 
+        #self.assertIn(b'<title>To-Do lists</title>', response.content) 
+        #self.assertTrue(response.content.endswith(b'</html>')) 
         # django r当请求一张页面时，Django把请求的metadata数据包装成一个HttpRequest对象，
         #然后Django加载合适的view方法,把这个HttpRequest 对象作为第一个参数传给view方法。
         #任何view方法都应该返回一个HttpResponse对象。
-        
+    
+
+    def test_home_page_can_save_a_POST_request(self):     
         request = HttpRequest()
         request.method = 'POST'
         request.POST['item_text'] = 'A new list item'
@@ -42,6 +42,26 @@ class HomePageTest(TestCase):
             {'new_item_text':  'A new list item'}
         )
         self.assertEqual(response.content.decode(), expected_html)
-        self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
 
-        
+
+
+from lists.models import Item
+
+class ItemModelTest(TestCase):
+
+    def test_saving_and_retrieving_items(self):
+        first_item = Item()
+        first_item.text = 'The first (ever) list item'
+        first_item.save()
+
+        second_item = Item()
+        second_item.text = 'Item the second'
+        second_item.save()
+
+        saved_items = Item.objects.all()
+        self.assertEqual(saved_items.count(), 2)
+
+        first_saved_item = saved_items[0]
+        second_saved_item = saved_items[1]
+        self.assertEqual(first_saved_item.text, 'The first (ever) list item')
+        self.assertEqual(second_saved_item.text, 'Item the second')
