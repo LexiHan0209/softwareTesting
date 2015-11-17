@@ -1,2 +1,3 @@
-# softwareTesting
-# These are my course projects for Software Testing Course
+# Software Testing
+
+These are my course projects for Software Testing Course
